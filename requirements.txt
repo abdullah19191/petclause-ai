@@ -1,0 +1,6 @@
+streamlit
+requests
+python-dotenv
+reportlab
+pypdf2
+sqlalchemy

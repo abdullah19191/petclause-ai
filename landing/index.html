@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>PetClause AI | Pet-Clause Compliance Checker for US & EU Rentals</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Scan rental listings for risky or illegal pet clauses in 10 seconds. AI-powered compliance for landlords. Avoid fines instantly.">
+  
+  <!-- Fonts & Icons -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
+  <style>
+    :root{
+      --primary:#2563eb;
+      --primary-light:#e6efff;
+      --dark:#0f172a;
+      --text:#334155;
+      --light:#f8fafc;
+      --grey:#64748b;
+      --font:'Inter',sans-serif;
+    }
+
+    *{margin:0;padding:0;box-sizing:border-box;}
+    body{font-family:var(--font);color:var(--text);background:var(--light);line-height:1.6;}
+    .container{width:90%;max-width:1100px;margin:auto;}
+    a{text-decoration:none;color:inherit;}
+
+    /* ---------------------------------------------------- */
+    /* LOGO (pure CSS) */
+    /* ---------------------------------------------------- */
+    .logo-wrap{
+      display:flex;
+      align-items:center;
+      gap:10px;
+      justify-content:center;
+      margin-bottom:25px;
+      user-select:none;
+    }
+
+    .logo-icon{
+      width:42px;
+      height:42px;
+      border-radius:12px;
+      background:linear-gradient(135deg,#ffffff 0%,#dfe9ff 100%);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      box-shadow:0 4px 12px rgba(0,0,0,0.15);
+    }
+
+    .logo-icon::before{
+      content:"🐾";
+      font-size:22px;
+    }
+
+    .logo-text{
+      font-size:2rem;
+      font-weight:800;
+      letter-spacing:-0.5px;
+    }
+
+    /* ---------------------------------------------------- */
+    /* HERO */
+    /* ---------------------------------------------------- */
+    header.hero{
+      background:linear-gradient(135deg,#4776E6 0%, #8E54E9 100%);
+      padding:100px 0 120px;
+      text-align:center;
+      color:white;
+    }
+
+    .hero h1{
+      font-size:3rem;
+      font-weight:800;
+      line-height:1.15;
+      max-width:700px;
+      margin:auto;
+    }
+
+    .hero .highlight{
+      color:#fffd96;
+      font-weight:800;
+    }
+
+    .hero p{
+      font-size:1.25rem;
+      margin:20px auto 40px;
+      max-width:650px;
+      opacity:0.98;
+    }
+
+    .btn{
+      display:inline-block;
+      background:white;
+      color:var(--primary);
+      padding:15px 32px;
+      font-size:1.1rem;
+      font-weight:700;
+      border-radius:40px;
+      transition:0.2s;
+    }
+
+    .btn:hover{
+      transform:translateY(-3px);
+      box-shadow:0 8px 20px rgba(255,255,255,0.25);
+    }
+
+    .trust{
+      margin-top:20px;
+      display:flex;
+      gap:25px;
+      justify-content:center;
+      font-size:0.9rem;
+      opacity:0.9;
+    }
+
+    /* ---------------------------------------------------- */
+    /* HOW IT WORKS */
+    /* ---------------------------------------------------- */
+    section.how{
+      padding:80px 0;
+      background:white;
+    }
+
+    .section-title{
+      font-size:2.2rem;
+      text-align:center;
+      margin-bottom:45px;
+      color:var(--dark);
+      font-weight:800;
+    }
+
+    .steps{
+      display:grid;
+      grid-template-columns:repeat(auto-fit, minmax(240px,1fr));
+      gap:30px;
+      text-align:center;
+    }
+
+    .step i{
+      font-size:2rem;
+      color:var(--primary);
+      background:var(--primary-light);
+      width:62px;
+      height:62px;
+      line-height:62px;
+      border-radius:50%;
+      margin-bottom:15px;
+    }
+
+    .step h3{
+      font-size:1.25rem;
+      font-weight:700;
+      margin-bottom:8px;
+    }
+
+    /* ---------------------------------------------------- */
+    /* FEATURES */
+    /* ---------------------------------------------------- */
+    section.features{
+      padding:80px 0;
+      background:var(--light);
+    }
+
+    .grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+      gap:30px;
+    }
+
+    .card{
+      background:white;
+      border-radius:14px;
+      padding:28px;
+      text-align:center;
+      border:1px solid #e5e7eb;
+      transition:.25s;
+    }
+
+    .card:hover{
+      box-shadow:0 6px 20px rgba(0,0,0,0.08);
+      transform:translateY(-4px);
+    }
+
+    .card i{
+      font-size:2.2rem;
+      margin-bottom:15px;
+      color:var(--primary);
+    }
+
+    .card h4{
+      font-size:1.2rem;
+      margin-bottom:8px;
+      font-weight:700;
+      color:var(--dark);
+    }
+
+    /* ---------------------------------------------------- */
+    /* TESTIMONIALS */
+    /* ---------------------------------------------------- */
+    section.testimonials{
+      padding:80px 0;
+      background:white;
+    }
+
+    .t-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(280px,1fr));
+      gap:30px;
+    }
+
+    blockquote{
+      background:white;
+      padding:22px;
+      border-left:5px solid var(--primary);
+      border-radius:8px;
+      font-style:italic;
+      font-size:0.95rem;
+    }
+
+    blockquote cite{
+      display:block;
+      margin-top:12px;
+      font-weight:600;
+      color:var(--grey);
+      font-style:normal;
+    }
+
+    /* ---------------------------------------------------- */
+    /* CTA */
+    /* ---------------------------------------------------- */
+    section.cta{
+      background:var(--primary);
+      color:white;
+      padding:80px 0;
+      text-align:center;
+    }
+
+    .cta h2{
+      font-size:2.3rem;
+      margin-bottom:12px;
+      font-weight:800;
+    }
+
+    .cta p{
+      font-size:1.1rem;
+      margin-bottom:25px;
+      opacity:0.95;
+    }
+
+    .cta .btn{
+      background:white;
+      color:var(--primary);
+    }
+
+    /* ---------------------------------------------------- */
+    /* FOOTER */
+    /* ---------------------------------------------------- */
+    footer{
+      background:var(--dark);
+      color:#cbd5e1;
+      padding:35px 0;
+      text-align:center;
+      font-size:0.9rem;
+    }
+
+    footer .contact{
+      margin-top:8px;
+      font-size:0.95rem;
+    }
+
+    footer a{
+      margin:0 10px;
+      color:#cbd5e1;
+      font-size:1.15rem;
+    }
+
+    @media(max-width:600px){
+      .hero h1{font-size:2.2rem;}
+      .hero p{font-size:1.05rem;}
+      .trust{flex-direction:column;gap:10px;}
+      .logo-text{font-size:1.7rem;}
+    }
+  </style>
+</head>
+
+<body>
+
+<header class="hero">
+  <div class="container">
+    
+    <!-- NEW CSS LOGO -->
+    <div class="logo-wrap">
+      <div class="logo-icon"></div>
+      <div class="logo-text">PetClause AI</div>
+    </div>
+
+    <h1>
+      Avoid <span class="highlight">$4,150 fines</span> from one wrong pet sentence.
+    </h1>
+
+    <p>
+      AI checks your rental listing against local pet ordinances in 10 seconds.  
+      Fix risky text instantly and download a compliant version.
+    </p>
+
+    <a class="btn" target="_blank" href="https://petclauseai.streamlit.app">
+      Try It Free &nbsp; <i class="fa-solid fa-arrow-up-right-from-square"></i>
+    </a>
+
+    <div class="trust">
+      <span><i class="fa-solid fa-shield-halved"></i> No login</span>
+      <span><i class="fa-solid fa-circle-check"></i> Free to start</span>
+    </div>
+  </div>
+</header>
+
+<section class="how">
+  <div class="container">
+    <h2 class="section-title">How It Works</h2>
+
+    <div class="steps">
+      <div class="step">
+        <i class="fa-solid fa-1"></i>
+        <h3>Paste listing</h3>
+        <p>Copy your Zillow, Craigslist, or FB Marketplace text.</p>
+      </div>
+
+      <div class="step">
+        <i class="fa-solid fa-2"></i>
+        <h3>Select city</h3>
+        <p>We compare it against the latest US/EU pet rules.</p>
+      </div>
+
+      <div class="step">
+        <i class="fa-solid fa-3"></i>
+        <h3>Get fixes + PDF</h3>
+        <p>Download compliant text and a proof-of-compliance report.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features">
+  <div class="container">
+    <h2 class="section-title">Built for Busy Landlords</h2>
+
+    <div class="grid">
+      <div class="card">
+        <i class="fa-solid fa-bolt"></i>
+        <h4>10-second scan</h4>
+        <p>Highlights risky clauses and auto-rewrites them.</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-city"></i>
+        <h4>US + EU coverage</h4>
+        <p>Cities updated weekly with verified ordinance text.</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-dollar-sign"></i>
+        <h4>Pay what you want</h4>
+        <p>$0 is allowed. Unlock PDF with any tip.</p>
+      </div>
+
+      <div class="card">
+        <i class="fa-solid fa-file-shield"></i>
+        <h4>Official-style PDF</h4>
+        <p>Includes citations for your records and audits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="testimonials">
+  <div class="container">
+    <h2 class="section-title">What Users Say</h2>
+
+    <div class="t-grid">
+      <blockquote>
+        “Caught a banned-breed clause that would’ve cost me $3,200 in Denver. I tipped $9 — worth it.”
+        <cite>— Sarah J., Denver CO</cite>
+      </blockquote>
+
+      <blockquote>
+        “I list 5 apartments monthly. This replaced hours of legal Googling.”
+        <cite>— Mike R., Austin TX</cite>
+      </blockquote>
+    </div>
+  </div>
+</section>
+
+<section class="cta">
+  <div class="container">
+    <h2>Scan your first listing now</h2>
+    <p>No account. No risk. 10 seconds.</p>
+
+    <a class="btn" target="_blank" href="https://petclauseai.streamlit.app">
+      Launch App &nbsp; <i class="fa-solid fa-arrow-right"></i>
+    </a>
+  </div>
+</section>
+
+<footer>
+  <div class="container">
+    <p>&copy; 2025 PetClause AI — Not legal advice.</p>
+
+    <div class="contact">
+      Contact: petclauseai@gmail.com
+    </div>
+
+    <div style="margin-top:10px;">
+      <a href="mailto:petclauseai@gmail.com"><i class="fa-solid fa-envelope"></i></a>
+      <a href="#"><i class="fa-brands fa-twitter"></i></a>
+      <a href="#"><i class="fa-brands fa-linkedin"></i></a>
+    </div>
+  </div>
+</footer>
+
+</body>
+</html>
