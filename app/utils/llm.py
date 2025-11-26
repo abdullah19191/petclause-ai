@@ -9,7 +9,7 @@ import streamlit as st
 
 # OPENROUTER_KEY = os.getenv("api_key")
 def load_api_key():
-    # 1. Try Streamlit secrets (Cloud)
+
     try:
         if "api_key" in st.secrets:
             return st.secrets["api_key"]
