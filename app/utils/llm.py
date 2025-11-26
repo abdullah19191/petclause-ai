@@ -5,8 +5,27 @@ import json
 import time
 import re
 from typing import Dict, Any, Optional
+import streamlit as st
 
-OPENROUTER_KEY = os.getenv("api_key")
+# OPENROUTER_KEY = os.getenv("api_key")
+def load_api_key():
+    # 1. Try Streamlit secrets (Cloud)
+    try:
+        if "api_key" in st.secrets:
+            return st.secrets["api_key"]
+    except Exception:
+        pass
+
+    # 2. Try environment variable (Netlify/Vercel)
+    if "OPENROUTER_API_KEY" in os.environ:
+        return os.environ["OPENROUTER_API_KEY"]
+
+    # 3. No key found
+    return None
+
+OPENROUTER_KEY = load_api_key()
+
+# OPENROUTER_KEY = st.secrets.get("api_key")
 MODEL = os.getenv("MODEL", "x-ai/grok-4.1-fast:free")
 MODEL_FALLBACK = os.getenv("MODEL_FALLBACK", "meta-llama/llama-3-8b-instruct")
 OPENROUTER_URL = "https://openrouter.ai/api/v1/chat/completions"
