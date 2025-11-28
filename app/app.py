@@ -8,6 +8,36 @@ from utils.pdf import create_pdf
 import uuid
 import urllib.parse # Import for safe URL encoding
 
+# ---------- WHITE-ONLY THEME + HIDE CHROME ----------
+hide_css = """
+<style>
+/* ---- lock white background ---- */
+html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
+
+/* ---- hide Streamlit header + fork + footer ---- */
+header[data-testid="stHeader"]{display:none;}
+div[data-testid="stDecoration"]{display:none;}
+footer{visibility:hidden;height:0;}
+
+/* ---- remove top padding gap ---- */
+.stMain > div:first-child{padding-top:0 !important;}
+</style>
+"""
+st.markdown(hide_css, unsafe_allow_html=True)
+
+# # ---------- HIDE STREAMLIT CHROME ----------
+# hide_streamlit_style = """
+# <style>
+# /* Hide the entire header block */
+# header[data-testid="stHeader"] {display: none;}
+# /* Hide fork-me ribbon */
+# div[data-testid="stDecoration"] {display: none;}
+# /* Hide bottom “Made with Streamlit” */
+# footer {visibility: hidden;height:0;}
+# </style>
+# """
+# st.markdown(hide_streamlit_style, unsafe_allow_html=True)
+
 # ---------------------------
 # Page configuration
 # ---------------------------
