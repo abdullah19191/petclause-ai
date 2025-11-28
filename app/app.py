@@ -107,6 +107,36 @@ st.markdown("""
 </style>
 """, unsafe_allow_html=True)
 
+st.markdown("""
+<style>
+
+/* --- FIX st.metric text visibility --- */
+[data-testid="stMetricValue"], 
+[data-testid="stMetricLabel"] {
+    color: #0f172a !important;      /* dark navy */
+    font-weight: 700 !important;
+}
+
+/* --- FIX st.warning visibility on white background --- */
+div.stAlert {
+    background-color: #fff4c2 !important;  /* stronger yellow */
+    border-left: 5px solid #e0a800 !important;
+    color: #3a2d00 !important;
+    padding: 1rem !important;
+    border-radius: 10px !important;
+}
+
+/* --- FIX st.info visibility (citations) --- */
+div.stAlert.info {
+    background-color: #e8f3ff !important;
+    border-left: 5px solid #2b6cb0 !important;
+    color: #0f1e33 !important;
+    border-radius: 10px !important;
+}
+
+</style>
+""", unsafe_allow_html=True)
+
 # ---------------------------
 # HERO SECTION
 # ---------------------------
