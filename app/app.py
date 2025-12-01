@@ -33,6 +33,31 @@ if "current_city" not in st.session_state:
 #         st.success("Developer mode enabled — premium unlocked!")
 #         st.rerun()
 
+
+# ---------- WHITE-ONLY THEME + HIDE STREAMLIT CHROME ----------
+st.markdown("""
+<style>
+html,body,.stApp { background:#ffffff !important; color:#0f172a !important; }
+
+/* hide header + decoration + footer */
+header[data-testid="stHeader"] {display:none;}
+div[data-testid="stDecoration"] {display:none;}
+footer {visibility:hidden;height:0;}
+
+/* remove weird top padding */
+.stMain > div:first-child { padding-top:0 !important; }
+</style>
+""", unsafe_allow_html=True)
+
+# # ---------------------------
+# # Page configuration
+# # ---------------------------
+st.set_page_config(
+    page_title="PetClause AI",
+    page_icon="🐾",
+    layout="centered"
+)
+
 # ====================== PAYMENT SUCCESS CHECK ======================
 query_params = st.query_params
 if query_params.get("paid") == "1" and query_params.get("session") == st.session_state.session_id:
