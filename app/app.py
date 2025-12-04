@@ -343,8 +343,9 @@ if st.session_state.scan_completed and st.session_state.result:
         # f"checkout[custom][session]={st.session_state.session_id}&"
         # f"checkout[custom][paid]=1"
         # )
-        lemon_link = "https://petclauseai.lemonsqueezy.com/checkout/buy/634abe5c-e894-4d89-b32e-14bd46ba543c"
-
+        # https://petclauseai.lemonsqueezy.com/buy/298b3527-aa5a-4b33-a1f2-ab7e503ce6fd
+        # lemon_link = "https://petclauseai.lemonsqueezy.com/checkout/buy/634abe5c-e894-4d89-b32e-14bd46ba543c"
+        lemon_link = "https://petclauseai.lemonsqueezy.com/checkout/buy/298b3527-aa5a-4b33-a1f2-ab7e503ce6fd"
         # st.markdown(f"""
         # <a href="{lemon_link}" target="_blank">
         #     <button style="background:#1d4ed8; color:white; padding:1.2rem; font-size:1.3rem;
