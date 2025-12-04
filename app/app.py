@@ -8,32 +8,48 @@ from utils.llm import analyze_listing
 from utils.pdf import create_pdf
 
 
-hide_css = """
-<style>
-/* ---- lock white background ---- */
-html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
-
-/* ---- hide Streamlit header + fork + footer ---- */
-header[data-testid="stHeader"]{display:none;}
-div[data-testid="stDecoration"]{display:none;}
-footer{visibility:hidden;height:0;}
-
-/* ---- remove top padding gap ---- */
-.stMain > div:first-child{padding-top:0 !important;}
-</style>
-"""
-st.markdown(hide_css, unsafe_allow_html=True)
-
-# # ---------------------------
-# # Page configuration
-# # ---------------------------
+# ---------------------------
+# 1. Page configuration (MUST BE FIRST)
+# ---------------------------
 st.set_page_config(
     page_title="PetClause AI",
     page_icon="🐾",
-    layout="centered",
-    initial_sidebar_state="expanded",
-
+    layout="centered"
 )
+
+# ---------------------------
+# 2. CSS to Hide Manage App & Branding
+# ---------------------------
+hide_css = """
+<style>
+    /* Lock white background */
+    html, body, .stApp { background:#ffffff !important; color:#0f172a !important; }
+
+    /* HIDE 'Manage app' BUTTON specifically */
+    button[data-testid="manage-app-button"] {
+        display: none !important;
+        visibility: hidden !important;
+        height: 0px !important;
+    }
+
+    /* Hide Top Header & Toolbar (Hamburger menu) */
+    header[data-testid="stHeader"] { display: none !important; }
+    [data-testid="stToolbar"] { display: none !important; }
+    
+    /* Hide Top Decoration Bar */
+    div[data-testid="stDecoration"] { display: none !important; }
+
+    /* Hide Footer (Made with Streamlit) */
+    footer { display: none !important; visibility: hidden !important; }
+
+    /* Remove top padding */
+    .stMain > div:first-child { padding-top: 0px !important; }
+    
+    /* Legacy Menu Hiding */
+    #MainMenu { visibility: hidden; }
+</style>
+"""
+st.markdown(hide_css, unsafe_allow_html=True)
 # ====================== UNLOCK CHECK (LemonSqueezy) ======================
 
 # query_params = st.query_params
