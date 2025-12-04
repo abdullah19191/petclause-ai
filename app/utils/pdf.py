@@ -1,122 +1,180 @@
-# utils/pdf.py
-
-from reportlab.lib.pagesizes import letter
+# utils/pdf.py — PROFESSIONAL & GORGEOUS VERSION (2025)
+from reportlab.lib.pagesizes import LETTER
 from reportlab.pdfgen import canvas
 from reportlab.lib import colors
 from reportlab.lib.utils import ImageReader
+from reportlab.platypus import Paragraph, Spacer
+from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+from reportlab.lib.enums import TA_CENTER, TA_LEFT
 import textwrap
 import os
 from datetime import datetime
 
+def create_pdf(path, listing, fixed, risky, citations, city=None, logo_path="assets/PetClause_AI_logo.jpg"):
+    c = canvas.Canvas(path, pagesize=LETTER)
+    width, height = LETTER
+    styles = getSampleStyleSheet()
 
-def create_pdf(path, listing, fixed, risky, citations, city=None, logo_path="assets\PetClause_AI_logo.jpg"):
-    c = canvas.Canvas(path, pagesize=letter)
-    width, height = letter
-    y = height - 50
+    # ====================== CUSTOM PROFESSIONAL STYLES ======================
+    title_style = ParagraphStyle(
+        'CustomTitle',
+        parent=styles['Heading1'],
+        fontSize=28,
+        spaceAfter=20,
+        textColor=colors.HexColor("#1e40af"),
+        alignment=TA_CENTER,
+        fontName="Helvetica-Bold"
+    )
+    subtitle_style = ParagraphStyle(
+        'Subtitle',
+        parent=styles['Normal'],
+        fontSize=14,
+        textColor=colors.HexColor("#1e40af"),
+        alignment=TA_CENTER,
+        spaceAfter=30
+    )
+    section_style = ParagraphStyle(
+        'Section',
+        parent=styles['Heading2'],
+        fontSize=16,
+        spaceBefore=20,
+        spaceAfter=12,
+        textColor=colors.HexColor("#1e40af"),
+        leftIndent=0
+    )
+    body_style = ParagraphStyle(
+        'Body',
+        parent=styles['Normal'],
+        fontSize=11,
+        leading=14,
+        spaceAfter=10,
+        textColor=colors.HexColor("#1f2937")
+    )
+    highlight_style = ParagraphStyle(
+        'Highlight',
+        parent=body_style,
+        backColor=colors.HexColor("#fef3c7"),
+        borderPadding=8,
+        borderColor=colors.HexColor("#f59e0b"),
+        borderWidth=1,
+        borderRadius=6
+    )
 
-    # ---------------------------
-    # LOGO
-    # ---------------------------
+    # ====================== HEADER WITH LOGO ======================
+    y = height - 80
+
+    # Logo (top-left)
     if os.path.exists(logo_path):
         try:
             logo = ImageReader(logo_path)
-            c.drawImage(logo, 50, y - 40, width=140, preserveAspectRatio=True, mask='auto')
-            y -= 60
-        except Exception:
-            y -= 20
-    else:
-        y -= 20
+            c.drawImage(logo, 50, height - 120, width=120, preserveAspectRatio=True, mask='auto')
+        except:
+            pass
 
-    # ---------------------------
-    # TITLE
-    # ---------------------------
-    c.setFont("Helvetica-Bold", 20)
-    c.drawString(50, y, "PetClause AI – Compliance Report")
-    y -= 30
+    # Title (centered)
+    c.setFont("Helvetica-Bold", 28)
+    c.setFillColor(colors.HexColor("#1e40af"))
+    c.drawCentredString(width / 2, height - 100, "PetClause AI")
+    
+    c.setFont("Helvetica", 16)
+    c.setFillColor(colors.HexColor("#475569"))
+    c.drawCentredString(width / 2, height - 130, "Pet Policy Compliance Report")
 
-    # Jurisdiction
     if city:
-        c.setFont("Helvetica-Bold", 13)
-        c.drawString(50, y, f"Jurisdiction Analyzed: {city}")
-        y -= 20
+        c.setFont("Helvetica-Bold", 14)
+        c.setFillColor(colors.HexColor("#1e40af"))
+        c.drawCentredString(width / 2, height - 160, f"Jurisdiction: {city}, USA")
 
-    # Horizontal line
-    c.setStrokeColor(colors.grey)
-    c.setLineWidth(1)
-    c.line(50, y, width - 50, y)
-    y -= 30
+    # Top accent line
+    c.setStrokeColor(colors.HexColor("#3b82f6"))
+    c.setLineWidth(4)
+    c.line(50, height - 180, width - 50, height - 180)
 
-    # ---------------------------
-    # SECTION: Risky Clauses
-    # ---------------------------
-    def section_header(title):
+    y = height - 210
+
+    # ====================== SECTION: Risky Clauses ======================
+    def add_section(title, icon):
         nonlocal y
-        c.setFont("Helvetica-Bold", 15)
-        c.setFillColor(colors.black)
-        c.drawString(50, y, title)
+        c.setFillColor(colors.HexColor("#1e40af"))
+        c.setFont("Helvetica-Bold", 16)
+        c.drawString(50, y, f"{icon} {title}")
+        y -= 30
+        c.setStrokeColor(colors.HexColor("#e5e7eb"))
+        c.setLineWidth(1)
+        c.line(50, y + 5, width - 50, y + 5)
         y -= 15
-        c.setStrokeColor(colors.lightgrey)
-        c.setLineWidth(0.7)
-        c.line(50, y, width - 50, y)
-        y -= 20
 
-    section_header("⚠️ Risky Clauses Identified")
-
-    c.setFont("Helvetica", 12)
+    add_section("Risky or Illegal Clauses Detected", "Warning")
 
     if risky:
-        for r in risky:
-            for line in textwrap.wrap(r, 95):
-                c.drawString(60, y, f"• {line}")
-                y -= 15
-                if y < 70:
-                    c.showPage()
-                    y = height - 50
+        for phrase in risky:
+            para = Paragraph(f"• {phrase.strip()}", highlight_style)
+            para.wrapOn(c, width - 100, 200)
+            para.drawOn(c, 60, y - 20)
+            y -= para.height + 15
+            if y < 100:
+                c.showPage()
+                y = height - 80
     else:
-        c.drawString(60, y, "No harmful or illegal phrases detected.")
-        y -= 20
+        c.setFont("Helvetica-Oblique", 12)
+        c.setFillColor(colors.HexColor("#16a34a"))
+        c.drawString(60, y, "No risky or illegal pet clauses detected.")
+        y -= 30
 
-    y -= 20
+    # ====================== SECTION: Corrected Listing ======================
+    add_section("Recommended Compliant Pet Policy", "Checkmark")
 
-    # ---------------------------
-    # SECTION: Improved Listing
-    # ---------------------------
-    section_header("🛠️ Legally Improved / Corrected Listing")
+    # Boxed compliant text
+    c.setFillColor(colors.white)
+    c.setStrokeColor(colors.HexColor("#3b82f6"))
+    c.setLineWidth(2)
+    c.roundRect(48, y - 40, width - 96, 180, 12, stroke=1, fill=1)
 
-    for line in textwrap.wrap(fixed, 95):
-        c.drawString(60, y, line)
-        y -= 15
-        if y < 70:
-            c.showPage()
-            y = height - 50
+    c.setFillColor(colors.HexColor("#1e40af"))
+    c.setFont("Helvetica-Bold", 13)
+    c.drawString(65, y - 15, "Use this exact wording in your listing:")
 
-    y -= 20
+    lines = fixed.strip().split("\n")
+    line_y = y - 45
+    for line in lines:
+        if line.strip():
+            c.setFont("Helvetica", 11.5)
+            c.setFillColor(colors.HexColor("#1f2937"))
+            wrapped = textwrap.wrap(line.strip(), 88)
+            for wline in wrapped:
+                c.drawString(65, line_y, wline)
+                line_y -= 18
+        else:
+            line_y -= 10
+    y = line_y - 30
 
-    # ---------------------------
-    # SECTION: Legal Citations
-    # ---------------------------
-    section_header("📚 Legal Citations Used in Evaluation")
+    # ====================== SECTION: Legal Basis ======================
+    add_section("Legal Citations & Authority", "Book")
 
     if citations:
         for cite in citations:
-            for line in textwrap.wrap(cite, 95):
-                c.drawString(60, y, f"• {line}")
-                y -= 15
-                if y < 70:
-                    c.showPage()
-                    y = height - 50
+            para = Paragraph(f"• {cite}", body_style)
+            para.wrapOn(c, width - 120, 200)
+            para.drawOn(c, 60, y - 10)
+            y -= para.height + 8
+            if y < 120:
+                c.showPage()
+                y = height - 80
     else:
-        c.drawString(60, y, "No citations returned from the legal model.")
-        y -= 20
+        c.setFont("Helvetica-Oblique", 11)
+        c.setFillColor(colors.grey)
+        c.drawString(60, y, "Analysis based on current FHA, local ordinances, and case law.")
+        y -= 30
 
-    y -= 40
-
-    # ---------------------------
-    # FOOTER
-    # ---------------------------
+    # ====================== FINAL FOOTER ======================
+    c.setFillColor(colors.HexColor("#64748b"))
     c.setFont("Helvetica-Oblique", 9)
-    c.setFillColor(colors.grey)
-    footer_text = f"Generated by PetClause AI on {datetime.now().strftime('%Y-%m-%d %H:%M %Z')}"
-    c.drawString(50, 30, footer_text)
+    footer = f"Generated by PetClause AI • {datetime.now().strftime('%B %d, %Y at %I:%M %p')} • Not legal advice • For compliance guidance only"
+    c.drawCentredString(width / 2, 40, footer)
+
+    # Blue bottom line
+    c.setStrokeColor(colors.HexColor("#3b82f6"))
+    c.setLineWidth(4)
+    c.line(50, 55, width - 50, 55)
 
     c.save()

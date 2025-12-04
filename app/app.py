@@ -60,12 +60,11 @@ if query_params.get("paid") == "1" and query_params.get("order"):
     st.session_state.order_identifier = query_params.get("order")
 
     # 2. Clean URL (remove ?paid=1&order=XXXX) AND RERUN
-    # We clear the query params and force a rerun.
-    # This must be the *last* thing in this block.
     st.query_params.clear()
-    
+    st.success("Payment successful! Your full report + PDF is now unlocked 🎉")
+    st.info("Just click **Scan** again  to see everything.")
+    st.balloons()  
     # st.rerun() is now optional as st.query_params.clear() forces one, 
-    # but let's keep it for absolute certainty of the redirect behavior.
     st.rerun()
 
 # ====================== DEV MODE TOGGLE (LOCAL TESTING ONLY) ======================
@@ -88,6 +87,20 @@ footer {visibility:hidden;height:0;}
 
 /* remove weird top padding */
 .stMain > div:first-child { padding-top:0 !important; }
+/* Remove Streamlit branding completely */
+    #MainMenu {visibility: hidden;}
+    footer {visibility: hidden;}
+    header {visibility: hidden;}
+
+    /* Kill the bottom-left "Made with Streamlit" + GitHub link forever */
+    .stApp [data-testid="stToolbar"] {display: none !important;}
+    .stApp [data-testid="stHeader"] {display: none !important;}
+    .stApp [data-testid="collapsedControl"] {display: none !important;}
+
+    /* Extra nuclear option – removes any remaining Streamlit traces */
+    a[href="https://streamlit.io"], 
+    a[href*="github.com"],
+    div[data-testid="stDecoration"] {display: none !important;}
 </style>
 """, unsafe_allow_html=True)
 
@@ -360,6 +373,7 @@ if st.session_state.scan_completed and st.session_state.result:
 
 
         st.caption("Instant access per session • 60-day money-back • No subscription")
+        
 
     # FULL ACCESS
     if st.session_state.paid:
