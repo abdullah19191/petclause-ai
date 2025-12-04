@@ -19,16 +19,16 @@ st.set_page_config(
 )
 # ====================== UNLOCK CHECK (LemonSqueezy) ======================
 
-query_params = st.query_params
+# query_params = st.query_params
 
-if query_params.get("paid") == "1" and query_params.get("order"):
-    st.session_state.paid = True
-    st.session_state.order = query_params.get("order")
+# if query_params.get("paid") == "1" and query_params.get("order"):
+#     st.session_state.paid = True
+#     st.session_state.order = query_params.get("order")
 
-    # Clean URL (remove ?paid=1&order=XXXX)
-    st.query_params.clear()
+#     # Clean URL (remove ?paid=1&order=XXXX)
+#     st.query_params.clear()
 
-    st.rerun()
+#     st.rerun()
 
 
 
@@ -49,7 +49,24 @@ if "last_listing" not in st.session_state:
     st.session_state.last_listing = ""
 if "current_city" not in st.session_state:
     st.session_state.current_city = "Denver"
+if "order_identifier" not in st.session_state: # <-- Add a check for the order ID state
+    st.session_state.order_identifier = None
 
+query_params = st.query_params
+
+if query_params.get("paid") == "1" and query_params.get("order"):
+    # 1. Set flags in session state (this is what persists the access)
+    st.session_state.paid = True
+    st.session_state.order_identifier = query_params.get("order")
+
+    # 2. Clean URL (remove ?paid=1&order=XXXX) AND RERUN
+    # We clear the query params and force a rerun.
+    # This must be the *last* thing in this block.
+    st.query_params.clear()
+    
+    # st.rerun() is now optional as st.query_params.clear() forces one, 
+    # but let's keep it for absolute certainty of the redirect behavior.
+    st.rerun()
 
 # ====================== DEV MODE TOGGLE (LOCAL TESTING ONLY) ======================
 # if st.secrets.get("DEV_MODE", False):
