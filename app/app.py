@@ -8,6 +8,21 @@ from utils.llm import analyze_listing
 from utils.pdf import create_pdf
 
 
+hide_css = """
+<style>
+/* ---- lock white background ---- */
+html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
+
+/* ---- hide Streamlit header + fork + footer ---- */
+header[data-testid="stHeader"]{display:none;}
+div[data-testid="stDecoration"]{display:none;}
+footer{visibility:hidden;height:0;}
+
+/* ---- remove top padding gap ---- */
+.stMain > div:first-child{padding-top:0 !important;}
+</style>
+"""
+st.markdown(hide_css, unsafe_allow_html=True)
 
 # # ---------------------------
 # # Page configuration
@@ -15,7 +30,9 @@ from utils.pdf import create_pdf
 st.set_page_config(
     page_title="PetClause AI",
     page_icon="🐾",
-    layout="centered"
+    layout="centered",
+    initial_sidebar_state="expanded",
+
 )
 # ====================== UNLOCK CHECK (LemonSqueezy) ======================
 
