@@ -221,7 +221,7 @@ if scan_button:
         st.session_state.scan_completed = True
         st.session_state.last_listing = listing
         st.session_state.current_city = city
-        st.session_state.paid = False  
+        # st.session_state.paid = False  
     st.rerun()
 
 # ====================== SHOW RESULTS ======================
