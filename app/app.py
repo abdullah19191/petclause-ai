@@ -9,79 +9,160 @@ from utils.pdf import create_pdf
 
 # ============ NUCLEAR STREAMLIT BRANDING REMOVAL (2025) ============
 # This works 100% on Streamlit Cloud — tested today
+# st.markdown("""
+# <script>
+# // Remove Streamlit badge + avatar + footer + everything
+# const removeBranding = () => {
+#     const selectors = [
+#         'a[href*="streamlit.io/cloud"]',           // Crown badge
+#         'div[class*="_profileContainer_"]',        // Your GitHub avatar container
+#         'img[data-testid="appCreatorAvatar"]',     // Avatar image
+#         'div[data-testid="stDecoration"]',         // Any decoration
+#         'header[data-testid="stHeader"]',          // Top bar
+#         'footer',                                  // Footer
+#         '[data-testid="stToolbar"]',               // Toolbar
+#         '[data-testid="collapsedControl"]',        // Hamburger
+#         'button[data-testid="manage-app-button"]', // Red manage button
+#         '#MainMenu'                                // Legacy menu
+#     ];
+    
+#     selectors.forEach(sel => {
+#         document.querySelectorAll(sel).forEach(el => {
+#             el.style.display = 'none';
+#             el.remove();
+#         });
+#     });
+    
+#     // Also hide any new elements that appear after load
+#     const observer = new MutationObserver(removeBranding);
+#     observer.observe(document.body, { childList: true, subtree: true });
+# };
+
+# // Run immediately and keep running
+# removeBranding();
+# setInterval(removeBranding, 500);
+# </script>
+
+# <style>
+#     /* Final CSS killswitch — hides anything left */
+#     [data-testid="stAppViewContainer"] > div:first-child > div:first-child {
+#         padding-top: 0 !important;
+#     }
+#     footer, header, #MainMenu, .stDecoration { display: none !important; }
+#     a[href*="streamlit.io"], a[href*="github.com"] { display: none !important; }
+#     div[class*="_profileContainer_"], 
+#     a[class*="_viewerBadge_"],
+#     img[data-testid="appCreatorAvatar"] {
+#         display: none !important;
+#         visibility: hidden !important;
+#         width: 0 !important;
+#         height: 0 !important;
+#     }
+# </style>
+# """, unsafe_allow_html=True)
+
+# hide_css = """
+# <style>
+# /* ---- lock white background ---- */
+# html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
+
+# /* ---- hide Streamlit header + fork + footer ---- */
+# header[data-testid="stHeader"]{display:none;}
+# div[data-testid="stDecoration"]{display:none;}
+# footer{visibility:hidden;height:0;}
+
+# /* ---- remove top padding gap ---- */
+# .stMain > div:first-child{padding-top:0 !important;}
+
+# /* Remove the “Made with Streamlit” footer */
+# footer[data-testid="stAppFooter"] { display: none !important; }
+#  #MainMenu {visibility: hidden;}
+#             footer {visibility: hidden;}
+#             header {visibility: hidden;}
+# </style>
+# """
+# ============ ULTIMATE STREAMLIT BRANDING KILLER (2025) ============
 st.markdown("""
+<style>
+    /* Base white theme */
+    html, body, .stApp { background: #ffffff !important; color: #0f172a !important; }
+    .stMain > div:first-child { padding-top: 0 !important; }
+
+    /* Hide ALL known Streamlit elements */
+    [data-testid="stHeader"], [data-testid="stToolbar"], [data-testid="stDecoration"], 
+    [data-testid="collapsedControl"], footer, header, #MainMenu { 
+        display: none !important; visibility: hidden !important; 
+    }
+    
+    /* Target the dynamic classes you inspected */
+    div[class*="_profileContainer_"], 
+    div[class*="_profilePreview_"], 
+    img[class*="_profileImage_"] { 
+        display: none !important; visibility: hidden !important; 
+        width: 0 !important; height: 0 !important; opacity: 0 !important; 
+    }
+    
+    a[class*="_container_"][class*="_viewerBadge_"], 
+    a[href*="streamlit.io/cloud"], 
+    a[href*="share.streamlit.io/user/"] { 
+        display: none !important; visibility: hidden !important; 
+        width: 0 !important; height: 0 !important; 
+    }
+    
+    /* Hide avatar specifically */
+    [data-testid="appCreatorAvatar"], 
+    img[alt="App Creator Avatar"] { 
+        display: none !important; 
+    }
+    
+    /* Nuclear: Hide entire lower-right corner */
+    div[style*="position: fixed; bottom: 0; right: 0"], 
+    div[style*="bottom: 20px; right: 20px"] { 
+        display: none !important; 
+    }
+    
+    /* Force hide any remaining badges/links */
+    a[href*="streamlit.io"], a[href*="github.com"] { 
+        display: none !important; 
+    }
+</style>
+
 <script>
-// Remove Streamlit badge + avatar + footer + everything
-const removeBranding = () => {
-    const selectors = [
-        'a[href*="streamlit.io/cloud"]',           // Crown badge
-        'div[class*="_profileContainer_"]',        // Your GitHub avatar container
-        'img[data-testid="appCreatorAvatar"]',     // Avatar image
-        'div[data-testid="stDecoration"]',         // Any decoration
-        'header[data-testid="stHeader"]',          // Top bar
-        'footer',                                  // Footer
-        '[data-testid="stToolbar"]',               // Toolbar
-        '[data-testid="collapsedControl"]',        // Hamburger
-        'button[data-testid="manage-app-button"]', // Red manage button
-        '#MainMenu'                                // Legacy menu
+// JS to kill elements on load + mutations (runs every 250ms)
+const killBranding = () => {
+    const targets = [
+        // Badges & profiles
+        'div[class*="_profileContainer_"]',
+        'img[data-testid="appCreatorAvatar"]',
+        'a[class*="_viewerBadge_"]',
+        'a[href*="streamlit.io/cloud"]',
+        'a[href*="share.streamlit.io/user/"]',
+        
+        // Generic
+        '[data-testid="stToolbar"]',
+        'footer',
+        'header',
+        '#MainMenu'
     ];
     
-    selectors.forEach(sel => {
-        document.querySelectorAll(sel).forEach(el => {
+    targets.forEach(selector => {
+        document.querySelectorAll(selector).forEach(el => {
             el.style.display = 'none';
-            el.remove();
+            el.style.visibility = 'hidden';
+            el.remove();  // Permanently delete
         });
     });
     
-    // Also hide any new elements that appear after load
-    const observer = new MutationObserver(removeBranding);
-    observer.observe(document.body, { childList: true, subtree: true });
+    // Watch for new elements (Streamlit reloads them)
+    const observer = new MutationObserver(killBranding);
+    observer.observe(document.body, { childList: true, subtree: true, attributes: true });
 };
 
-// Run immediately and keep running
-removeBranding();
-setInterval(removeBranding, 500);
+// Run now, and keep running
+killBranding();
+setInterval(killBranding, 250);
 </script>
-
-<style>
-    /* Final CSS killswitch — hides anything left */
-    [data-testid="stAppViewContainer"] > div:first-child > div:first-child {
-        padding-top: 0 !important;
-    }
-    footer, header, #MainMenu, .stDecoration { display: none !important; }
-    a[href*="streamlit.io"], a[href*="github.com"] { display: none !important; }
-    div[class*="_profileContainer_"], 
-    a[class*="_viewerBadge_"],
-    img[data-testid="appCreatorAvatar"] {
-        display: none !important;
-        visibility: hidden !important;
-        width: 0 !important;
-        height: 0 !important;
-    }
-</style>
 """, unsafe_allow_html=True)
-
-hide_css = """
-<style>
-/* ---- lock white background ---- */
-html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
-
-/* ---- hide Streamlit header + fork + footer ---- */
-header[data-testid="stHeader"]{display:none;}
-div[data-testid="stDecoration"]{display:none;}
-footer{visibility:hidden;height:0;}
-
-/* ---- remove top padding gap ---- */
-.stMain > div:first-child{padding-top:0 !important;}
-
-/* Remove the “Made with Streamlit” footer */
-footer[data-testid="stAppFooter"] { display: none !important; }
- #MainMenu {visibility: hidden;}
-            footer {visibility: hidden;}
-            header {visibility: hidden;}
-</style>
-"""
-
 
 st.markdown(hide_css, unsafe_allow_html=True)
 
