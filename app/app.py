@@ -448,27 +448,24 @@ if st.session_state.scan_completed and st.session_state.result:
 
     st.caption("⚖️ Automated guidance only; not legal advice.")
 
-    # ------------------------------------------------------------------
-# Nuke the “Made with Streamlit” badge + profile avatar on Cloud
+
+# ------------------------------------------------------------------
+# Remove “Made with Streamlit” badge + GitHub avatar on Cloud
 # ------------------------------------------------------------------
 st.markdown(
     """
     <script>
-    // Run only once per page load
-    if (!window.stBadgeKilled) {
-        window.stBadgeKilled = true;
-
+    (function(){
         const style = document.createElement('style');
-        style.innerHTML = `
-            /* 2025-12 Streamlit Cloud classes – keep them in one line */
+        style.textContent = `
+            /* badge */
             a[href*="streamlit.io/cloud"] { display:none !important; }
-            a[href*="streamlit.io/cloud"] + div { display:none !important; }
-            ._container_gzau3_1,
-            ._profileContainer_gzau3_53,
-            ._viewerBadge_nim44_23 { display:none !important; }
+            /* avatar block */
+            [data-testid="appCreatorAvatar"],
+            [data-testid="appCreatorAvatar"] img { display:none !important; }
         `;
         document.head.appendChild(style);
-    }
+    })();
     </script>
     """,
     unsafe_allow_html=True,
