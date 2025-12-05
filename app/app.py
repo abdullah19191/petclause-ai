@@ -473,54 +473,38 @@ st.markdown(
 # ---------------------------
 # 2. CSS to Hide ALL Streamlit Chrome (Nuclear Option)
 # ---------------------------
-hidee_css = """
-<style>
-    /* 1. Lock white background */
-    html, body, .stApp { background:#ffffff !important; color:#0f172a !important; }
 
-    /* 2. Hide the App Creator Profile Picture Container */
-    /* Targets: <div class="_profileContainer_gzau3_53"> */
-    div[class*="_profileContainer_"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
 
-    /* 3. Hide the Viewer Badge (Streamlit Crown Logo) */
-    /* Targets: <a class="_container_gzau3_1 _viewerBadge_nim44_23"> */
-    a[class*="_viewerBadge_"], a[class*="_container_"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 4. Hide the specific 'Manage app' button (from previous steps) */
-    button[data-testid="manage-app-button"] {
-        display: none !important;
-        visibility: hidden !important;
-    }
-    
-    /* 5. Hide the 'Terminal/Developer' button (The red button in your screenshot) */
-    button[class*="terminalButton"] {
-        display: none !important;
-    }
-    
-    /* 6. Hide the standard Streamlit Toolbar/Header */
-    [data-testid="stToolbar"], header[data-testid="stHeader"], div[data-testid="stDecoration"] {
-        display: none !important;
-    }
+# --- FINAL: Kill Streamlit Branding, GitHub Avatar, Viewer Badge (Cloud Safe) ---
+st.markdown("""
+<script>
+const hideStreamlitBranding = () => {
+    // target profile avatar
+    document.querySelectorAll('img[data-testid="appCreatorAvatar"]').forEach(el => el.style.display = "none");
 
-    /* 7. Hide Footer (Made with Streamlit) */
-    footer { 
-        display: none !important; 
-        visibility: hidden !important; 
-    }
+    // target profile container
+    document.querySelectorAll('div[class*="profileContainer"]').forEach(el => el.style.display = "none");
 
-    /* 8. Remove top padding so the hero section touches the top */
-    .stMain > div:first-child { 
-        padding-top: 0px !important; 
-    }
-    
-    /* 9. Legacy: Hide Hamburger menu */
-    #MainMenu { visibility: hidden; }
-</style>
-"""
-st.markdown(hidee_css, unsafe_allow_html=True)
+    // target viewer badge
+    document.querySelectorAll('a[class*="viewerBadge"]').forEach(el => el.style.display = "none");
+
+    // STREAMLIT CLOUD NEW BADGE (2025)
+    document.querySelectorAll('a[href*="streamlit.io"]').forEach(el => el.style.display = "none");
+
+    // remove GitHub user link
+    document.querySelectorAll('a[href*="github.com"]').forEach(el => el.style.display = "none");
+
+    // remove entire toolbar
+    document.querySelectorAll('[data-testid="stToolbar"]').forEach(el => el.style.display = "none");
+
+};
+
+// Keep trying until Streamlit finishes DOM mutations
+const attemptHide = setInterval(() => {
+    hideStreamlitBranding();
+}, 250);
+
+// Stop after 10 seconds
+setTimeout(() => clearInterval(attemptHide), 10000);
+</script>
+""", unsafe_allow_html=True)
