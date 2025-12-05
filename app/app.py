@@ -61,26 +61,26 @@ from utils.pdf import create_pdf
 # </style>
 # """, unsafe_allow_html=True)
 
-# hide_css = """
-# <style>
-# /* ---- lock white background ---- */
-# html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
+hide_css = """
+<style>
+/* ---- lock white background ---- */
+html,body,.stApp{background:#ffffff !important;color:#0f172a !important;}
 
-# /* ---- hide Streamlit header + fork + footer ---- */
-# header[data-testid="stHeader"]{display:none;}
-# div[data-testid="stDecoration"]{display:none;}
-# footer{visibility:hidden;height:0;}
+/* ---- hide Streamlit header + fork + footer ---- */
+header[data-testid="stHeader"]{display:none;}
+div[data-testid="stDecoration"]{display:none;}
+footer{visibility:hidden;height:0;}
 
-# /* ---- remove top padding gap ---- */
-# .stMain > div:first-child{padding-top:0 !important;}
+/* ---- remove top padding gap ---- */
+.stMain > div:first-child{padding-top:0 !important;}
 
-# /* Remove the “Made with Streamlit” footer */
-# footer[data-testid="stAppFooter"] { display: none !important; }
-#  #MainMenu {visibility: hidden;}
-#             footer {visibility: hidden;}
-#             header {visibility: hidden;}
-# </style>
-# """
+/* Remove the “Made with Streamlit” footer */
+footer[data-testid="stAppFooter"] { display: none !important; }
+ #MainMenu {visibility: hidden;}
+            footer {visibility: hidden;}
+            header {visibility: hidden;}
+</style>
+"""
 # ============ ULTIMATE STREAMLIT BRANDING KILLER (2025) ============
 st.markdown("""
 <style>
