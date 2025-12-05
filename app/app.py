@@ -20,6 +20,9 @@ footer{visibility:hidden;height:0;}
 
 /* ---- remove top padding gap ---- */
 .stMain > div:first-child{padding-top:0 !important;}
+
+/* Remove the “Made with Streamlit” footer */
+footer[data-testid="stAppFooter"] { display: none !important; }
 </style>
 """
 st.markdown(hide_css, unsafe_allow_html=True)
