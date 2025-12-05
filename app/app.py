@@ -7,59 +7,36 @@ from utils.db import get_ordinance
 from utils.llm import analyze_listing
 from utils.pdf import create_pdf
 
-# ============ NUCLEAR STREAMLIT BRANDING REMOVAL (2025) ============
-# This works 100% on Streamlit Cloud — tested today
-# st.markdown("""
-# <script>
-# // Remove Streamlit badge + avatar + footer + everything
-# const removeBranding = () => {
-#     const selectors = [
-#         'a[href*="streamlit.io/cloud"]',           // Crown badge
-#         'div[class*="_profileContainer_"]',        // Your GitHub avatar container
-#         'img[data-testid="appCreatorAvatar"]',     // Avatar image
-#         'div[data-testid="stDecoration"]',         // Any decoration
-#         'header[data-testid="stHeader"]',          // Top bar
-#         'footer',                                  // Footer
-#         '[data-testid="stToolbar"]',               // Toolbar
-#         '[data-testid="collapsedControl"]',        // Hamburger
-#         'button[data-testid="manage-app-button"]', // Red manage button
-#         '#MainMenu'                                // Legacy menu
-#     ];
-    
-#     selectors.forEach(sel => {
-#         document.querySelectorAll(sel).forEach(el => {
-#             el.style.display = 'none';
-#             el.remove();
-#         });
-#     });
-    
-#     // Also hide any new elements that appear after load
-#     const observer = new MutationObserver(removeBranding);
-#     observer.observe(document.body, { childList: true, subtree: true });
-# };
+st.markdown("""
+<script>
+function killBranding() {
 
-# // Run immediately and keep running
-# removeBranding();
-# setInterval(removeBranding, 500);
-# </script>
+    // Profile avatar (new data-testid, 2025)
+    document.querySelectorAll('[data-testid="stHeader"] img').forEach(el => el.remove());
 
-# <style>
-#     /* Final CSS killswitch — hides anything left */
-#     [data-testid="stAppViewContainer"] > div:first-child > div:first-child {
-#         padding-top: 0 !important;
-#     }
-#     footer, header, #MainMenu, .stDecoration { display: none !important; }
-#     a[href*="streamlit.io"], a[href*="github.com"] { display: none !important; }
-#     div[class*="_profileContainer_"], 
-#     a[class*="_viewerBadge_"],
-#     img[data-testid="appCreatorAvatar"] {
-#         display: none !important;
-#         visibility: hidden !important;
-#         width: 0 !important;
-#         height: 0 !important;
-#     }
-# </style>
-# """, unsafe_allow_html=True)
+    // Container containing GitHub username
+    document.querySelectorAll('div[class*="stDeployCreator"]').forEach(el => el.remove());
+
+    // Viewer badge (changed completely in 2025)
+    document.querySelectorAll('div[class*="viewerBadge"]').forEach(el => el.remove());
+
+    // Streamlit footer link
+    document.querySelectorAll('a[href*="streamlit"]').forEach(el => el.remove());
+
+    // Toolbar
+    document.querySelectorAll('[data-testid="stToolbar"]').forEach(el => el.remove());
+
+    // NEW — entire deploy info wrapper
+    document.querySelectorAll('[data-testid="stDeployButton"]').forEach(el => el.remove());
+
+}
+
+// TRY CONTINUOUSLY
+let timer = setInterval(killBranding, 250);
+setTimeout(() => clearInterval(timer), 8000);
+</script>
+""", unsafe_allow_html=True)
+
 
 hide_css = """
 <style>
