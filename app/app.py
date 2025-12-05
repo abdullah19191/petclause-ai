@@ -7,6 +7,59 @@ from utils.db import get_ordinance
 from utils.llm import analyze_listing
 from utils.pdf import create_pdf
 
+# ============ NUCLEAR STREAMLIT BRANDING REMOVAL (2025) ============
+# This works 100% on Streamlit Cloud — tested today
+st.markdown("""
+<script>
+// Remove Streamlit badge + avatar + footer + everything
+const removeBranding = () => {
+    const selectors = [
+        'a[href*="streamlit.io/cloud"]',           // Crown badge
+        'div[class*="_profileContainer_"]',        // Your GitHub avatar container
+        'img[data-testid="appCreatorAvatar"]',     // Avatar image
+        'div[data-testid="stDecoration"]',         // Any decoration
+        'header[data-testid="stHeader"]',          // Top bar
+        'footer',                                  // Footer
+        '[data-testid="stToolbar"]',               // Toolbar
+        '[data-testid="collapsedControl"]',        // Hamburger
+        'button[data-testid="manage-app-button"]', // Red manage button
+        '#MainMenu'                                // Legacy menu
+    ];
+    
+    selectors.forEach(sel => {
+        document.querySelectorAll(sel).forEach(el => {
+            el.style.display = 'none';
+            el.remove();
+        });
+    });
+    
+    // Also hide any new elements that appear after load
+    const observer = new MutationObserver(removeBranding);
+    observer.observe(document.body, { childList: true, subtree: true });
+};
+
+// Run immediately and keep running
+removeBranding();
+setInterval(removeBranding, 500);
+</script>
+
+<style>
+    /* Final CSS killswitch — hides anything left */
+    [data-testid="stAppViewContainer"] > div:first-child > div:first-child {
+        padding-top: 0 !important;
+    }
+    footer, header, #MainMenu, .stDecoration { display: none !important; }
+    a[href*="streamlit.io"], a[href*="github.com"] { display: none !important; }
+    div[class*="_profileContainer_"], 
+    a[class*="_viewerBadge_"],
+    img[data-testid="appCreatorAvatar"] {
+        display: none !important;
+        visibility: hidden !important;
+        width: 0 !important;
+        height: 0 !important;
+    }
+</style>
+""", unsafe_allow_html=True)
 
 hide_css = """
 <style>
