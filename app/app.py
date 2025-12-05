@@ -470,3 +470,57 @@ st.markdown(
     """,
     unsafe_allow_html=True,
 )
+# ---------------------------
+# 2. CSS to Hide ALL Streamlit Chrome (Nuclear Option)
+# ---------------------------
+hidee_css = """
+<style>
+    /* 1. Lock white background */
+    html, body, .stApp { background:#ffffff !important; color:#0f172a !important; }
+
+    /* 2. Hide the App Creator Profile Picture Container */
+    /* Targets: <div class="_profileContainer_gzau3_53"> */
+    div[class*="_profileContainer_"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+
+    /* 3. Hide the Viewer Badge (Streamlit Crown Logo) */
+    /* Targets: <a class="_container_gzau3_1 _viewerBadge_nim44_23"> */
+    a[class*="_viewerBadge_"], a[class*="_container_"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 4. Hide the specific 'Manage app' button (from previous steps) */
+    button[data-testid="manage-app-button"] {
+        display: none !important;
+        visibility: hidden !important;
+    }
+    
+    /* 5. Hide the 'Terminal/Developer' button (The red button in your screenshot) */
+    button[class*="terminalButton"] {
+        display: none !important;
+    }
+    
+    /* 6. Hide the standard Streamlit Toolbar/Header */
+    [data-testid="stToolbar"], header[data-testid="stHeader"], div[data-testid="stDecoration"] {
+        display: none !important;
+    }
+
+    /* 7. Hide Footer (Made with Streamlit) */
+    footer { 
+        display: none !important; 
+        visibility: hidden !important; 
+    }
+
+    /* 8. Remove top padding so the hero section touches the top */
+    .stMain > div:first-child { 
+        padding-top: 0px !important; 
+    }
+    
+    /* 9. Legacy: Hide Hamburger menu */
+    #MainMenu { visibility: hidden; }
+</style>
+"""
+st.markdown(hidee_css, unsafe_allow_html=True)
